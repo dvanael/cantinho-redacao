@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Paragraph from "./Paragraph";
 
-const DraftEditor = () => {
-  const [paragraphs, setParagraphs] = useState([]);
-  const [savedParagraphs, setSavedParagraphs] = useState([]);
+const useParagraphs = (initialState = []) => {
+  const [paragraphs, setParagraphs] = useState(initialState);
 
   const addParagraph = () => {
     if (paragraphs.length < 4) {
@@ -14,6 +13,13 @@ const DraftEditor = () => {
   const updateParagraphText = (id, newText) => {
     setParagraphs(paragraphs.map(p => p.id === id ? { ...p, text: newText } : p));
   };
+
+  return { paragraphs, addParagraph, updateParagraphText };
+};
+
+const DraftEditor = () => {
+  const { paragraphs, addParagraph, updateParagraphText } = useParagraphs([]);
+  const [savedParagraphs, setSavedParagraphs] = useState([]);
 
   const saveDraft = () => {
     setSavedParagraphs([...paragraphs]);
@@ -26,8 +32,14 @@ const DraftEditor = () => {
         {paragraphs.map(p => (
           <Paragraph key={p.id} id={p.id} text={p.text} onTextChange={updateParagraphText} />
         ))}
-        <button onClick={addParagraph} disabled={paragraphs.length >= 4}>Adicionar Parágrafo</button>
-        <button onClick={saveDraft} disabled={paragraphs.length === 0}>Salvar Rascunho</button>
+        <div className="btn-container">
+          <button className="btn" onClick={addParagraph} disabled={paragraphs.length >= 4} aria-label="Adicionar Parágrafo">
+            {paragraphs.length >= 4 ? "Limite Parágrafos Alcançado" : "Adicionar Parágrafo"}
+          </button>
+          <button className="btn" onClick={saveDraft} disabled={paragraphs.length === 0} aria-label="Salvar Rascunho">
+            Salvar Rascunho
+          </button>
+        </div>
       </div>
 
       <div className="saved-draft">
