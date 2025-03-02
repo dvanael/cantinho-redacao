@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import './App.css'
+import React from "react";
+import "./App.css";
+import DraftEditor from "./components/DraftEditor";
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <h1 className='title'>Cantinho da Redação</h1>
-    </>
-  )
-}
+    <div className="app">
+      <div className="title">
+        <h1>CANTINHO DA REDAÇÃO</h1>
+      </div>
+      <DraftEditor />
+    </div>
+  );
+};
 
-export default App
+export default App;
